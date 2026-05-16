@@ -1,0 +1,5 @@
+ultralytics==8.4.51
+opencv-python
+pillow
+torch
+torchvision
