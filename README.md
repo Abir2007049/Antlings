@@ -57,15 +57,19 @@ Instead of just counting boxes in every single frame (which creates a huge error
 
 ## 📊 Task-05: Evaluation, Visualization & Analysis
 
-### Final Evaluation Metrics
-I tested the newly trained model on a fresh set of validation images. It achieved really strong results for a difficult drone dataset:
+### 📊 Final Evaluation Metrics (Validation Split)
 
-| Metric | Score | What it means |
-| :--- | :--- | :--- |
-| **Inference Speed** | **~16.5ms** (~60.6 FPS) | Runs at double the speed of a normal drone camera. |
-| **mAP50** | **0.5735** | Great overall accuracy for aerial views. |
-| **Precision** | **0.7032** | When the model says it found something, it is usually right. |
-| **Recall** | **0.5271** | It successfully spots over half of all valid targets in crowded scenes. |
+The customized YOLOv8 Medium model was formally evaluated on the processed validation dataset. Drone imagery is notoriously difficult due to extreme altitudes and small target footprints, making these baseline results highly competitive:
+
+| Metric | System Output | Engineering Interpretation |
+| :--- | :---: | :--- |
+| **mAP50 (All Classes)** | **0.5735** | Strong overall baseline accuracy for high-altitude, multi-class object detection. |
+| **mAP50-95** | **0.3632** | Reflects strict bounding-box localization accuracy across variable IoU thresholds. |
+| **Precision (P)** | **0.7032** | High precision: when the model detects an object, it is correct over 70% of the time. |
+| **Recall (R)** | **0.5271** | The model successfully localized over half of all valid, heavily-obscured targets. |
+| **Inference Speed** | **16.5 ms** | Operating at **~60.6 FPS**, the pipeline exceeds real-time constraints (double standard 30 FPS feeds). |
+
+**Class-Specific Highlights:** The architecture performed exceptionally well on rigid vehicle geometries, achieving an **80.1% mAP50 specifically for the `Car` class**.
 
 ### Engineering Analysis
 * **Strengths:** * **Vehicle Detection:** The model is fantastic at finding cars, scoring an 80.1% mAP50. 
@@ -77,9 +81,23 @@ I tested the newly trained model on a fresh set of validation images. It achieve
 
 ## 📁 Repository Structure & Deliverables
 
-* `/src/`: Contains my Python code for cleaning the data, training the model, and running the video tracker.
-* `/config/`: The custom setup files for my 4-class model.
-* `Demo_Video.mp4`: [INSERT YOUTUBE OR DRIVE LINK HERE] - A 3-minute video showing the model tracking vehicles and people in real-time on a Chittagong flyover.
-* `Sample_Outputs/`: Example images showing the model working flawlessly on highly crowded test photos.
+Here is how the project files are organized to make it easy to review my code, models, and final results:
+
+```text
+Antlings_Drone_Detection/
+│
+├── README.md                  # This document explaining the project workflow
+├── requirements.txt           # List of Python libraries used (Ultralytics, OpenCV, etc.)
+│
+├── src/                       
+│   └── drone_pipeline.ipynb   # The main Google Colab notebook containing all my Python code for cleaning data, training, and tracking
+│
+├── models/                    
+│   └── best.pt                # The final trained YOLOv8 Medium weights (The "brain" of the model)
+│
+└── outputs/                   
+    ├── metrics/               # Evaluation charts (Precision-Recall curve, Confusion Matrix)
+    ├── sample_predictions/    # Example images showing the model working flawlessly on highly crowded test photos
+    └── tracking_video/        # My final 3-minute demo video showing real-time tracking on a Chittagong flyover
 
 ---
